@@ -27,7 +27,7 @@ class CartController extends Controller
         $data['options']['image'] = $product_info->product_image;
 
         Cart::add($data);
-
+        // Cart::destroy();
         return Redirect::to('/show-cart');
     }
 
@@ -38,5 +38,18 @@ class CartController extends Controller
         return view('pages.cart.show_cart')
         ->with('category', $cate_product)
         ->with('brand', $brand_product);
+    }
+
+    public function delete_to_cart($rowId){
+        Cart::update($rowId, 0); //xoa san pham bang cach set rowId = 0 (số lượng bằng 0)
+        return Redirect::to('/show-cart');
+    }
+
+    public function update_cart_quantity(Request $request){
+        $rowId = $request->rowId_cart; //rowId_cart la name cua input
+        $qty = $request->cart_quantity; //cart_quantity la name cua input
+
+        Cart::update($rowId,$qty);
+        return Redirect::to('/show-cart');
     }
 }
