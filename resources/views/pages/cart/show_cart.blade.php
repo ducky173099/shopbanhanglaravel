@@ -7,7 +7,7 @@
     <div class="container" style="width: 100% !important;">
         <div class="breadcrumbs">
             <ol class="breadcrumb">
-              <li><a href="#">Trang chủ</a></li>
+              <li><a href="{{URL::to('/')}}">Trang chủ</a></li>
               <li class="active">Giỏ hàng</li>
             </ol>
         </div>
@@ -75,10 +75,6 @@
 
 <section id="do_action">
     <div class="container" style="width: 100% !important;">
-        {{-- <div class="heading">
-            <h3>What would you like to do next?</h3>
-            <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
-        </div> --}}
         <div class="row">
             {{-- <div class="col-sm-6">
                 <div class="chose_area">
@@ -142,8 +138,19 @@
                         <li>Phí vận chuyển <span>Free</span></li>
                         <li>Thành tiền <span>{{Cart::total().' '.'vnđ'}}</span></li>
                     </ul>
-                        {{-- <a class="btn btn-default update" href="">Update</a> --}}
+
+                    <?php
+                        $customer_id = Session::get('customer_id');
+                        if($customer_id != NULL){
+                    ?>
+                        <a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
+                    <?php         
+                        } else {
+                    ?>
                         <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Thanh toán</a>
+                    <?php    
+                        }
+                    ?>
                 </div>
             </div>
         </div>

@@ -40,7 +40,34 @@ class CheckoutController extends Controller
     }
 
     public function checkout(){
-        echo 'checkoutt';
+        $cate_product = DB::table('tbl_category_product')->where('category_status','0')->orderby('category_id','desc')->get();
+        $brand_product = DB::table('tbl_brand')->where('brand_status','0')->orderby('brand_id','desc')->get();
+
+        return view('pages.checkout.show_checkout')
+            ->with('category',$cate_product)
+            ->with('brand',$brand_product);
+    }
+
+    public function save_checkout_customer(Request $request){
+        $data = array();
+
+        //trường customer_name = name của input tương ứng trong form
+        $data['shipping_name'] = $request->shipping_name; 
+        $data['shipping_phone'] = $request->shipping_phone; 
+        $data['shipping_email'] = $request->shipping_email; 
+        $data['shipping_notes'] = $request->shipping_notes; 
+        $data['shipping_address'] = $request->shipping_address; 
+
+        //insertGetId: sẽ lấy ra id của dữ liệu vừa insert
+        $shipping_id = DB::table('tbl_shipping')->insertGetId($data);
+        //lấy ra customer_id từ dữ liệu mới thêm ở trên gán vào biến customer_id
+        Session::put('shipping_id', $shipping_id);
+
+        return Redirect::to('/payment');
+    }
+
+    public function payment(){
+        echo 'payment';
     }
 
 }
