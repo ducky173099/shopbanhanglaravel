@@ -25,6 +25,10 @@
 </head><!--/head-->
 
 <body>
+    <?php 
+        // echo Session::get('customer_id');
+        // echo Session::get('shipping_id');
+    ?>
     <header id="header"><!--header-->
         <div class="header_top"><!--header_top-->
             <div class="container">
@@ -90,11 +94,16 @@
                                 <li><a href="#"><i class="fa fa-star"></i> Yêu thích</a></li>
                                 <?php
                                     $customer_id = Session::get('customer_id');
-                                    echo $customer_id;
-                                    if($customer_id != NULL){
+                                    $shipping_id = Session::get('shipping_id');
+                                    // echo $customer_id;
+                                    if($customer_id != NULL && $shipping_id == NULL){
                                 ?>
                                     <li><a href="{{URL::to('/checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
 
+                                <?php 
+                                    }elseif ($customer_id != NULL && $shipping_id != NULL) {
+                                ?>
+                                    <li><a href="{{URL::to('/payment')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
                                 <?php         
                                     } else {
                                 ?>
@@ -108,8 +117,9 @@
 
                                 <?php
                                     $customer_id = Session::get('customer_id');
-                                    echo $customer_id;
-                                    if($customer_id != NULL){
+                                    $shipping_id = Session::get('shipping_id');
+                                    // echo $customer_id;
+                                    if($customer_id != NULL  && $shipping_id != NULL){
                                 ?>
                                     <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a></li>
 
@@ -130,7 +140,7 @@
         <div class="header-bottom"><!--header-bottom-->
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-9">
+                    <div class="col-sm-8">
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                 <span class="sr-only">Toggle navigation</span>
@@ -154,10 +164,15 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="search_box pull-right">
-                            <input type="text" placeholder="Search"/>
-                        </div>
+                    <div class="col-sm-4">
+                        <form action="{{URL::to('/tim-kiem')}}" method="post">
+                            {{ csrf_field() }}
+                            <div class="search_box pull-right">
+                                <input type="text" name="keywords_submit" placeholder="Search"/>
+                                <input type="submit" name="search_item" style="width: 60px;background-color: #f59bab;font-size: 10px;color: black;" class="btn btn-info btn-sm" value="Tìm kiếm"/>
+                            </div>
+                        </form>
+        
                     </div>
                 </div>
             </div>
